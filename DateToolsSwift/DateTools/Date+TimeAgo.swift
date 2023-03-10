@@ -68,8 +68,6 @@ public extension Date {
         
         
         let components = calendar.dateComponents(unitFlags, from: earliest, to: latest)
-        let yesterday = date.subtract(1.days)
-        let isYesterday = yesterday.day == self.day
         
         //Not Yet Implemented/Optional
         //The following strings are present in the translation files but lack logic as of 2014.04.05
@@ -112,7 +110,7 @@ public extension Date {
         else if (components.day! >= 2) {
             return self.logicalLocalizedStringFromFormat(format: "%%d %@days ago", value: components.day!)
         }
-        else if (isYesterday) {
+        else if (components.day! >= 1) {
             if (numericDates) {
                 return DateToolsLocalizedStrings("1 day ago");
             }
@@ -161,12 +159,8 @@ public extension Date {
         let earliest = self.earlierDate(date)
         let latest = (earliest == self) ? date : self //Should pbe triple equals, but not extended to Date at this time
         
-        
-        let components = calendar.dateComponents(unitFlags, from: earliest, to: latest)
-        let yesterday = date.subtract(1.days)
-        let isYesterday = yesterday.day == self.day
-        
-        
+        let components = calendar.dateComponents(unitFlags, from: earliest, to: latest)    
+      
         if (components.year! >= 1) {
             return self.logicalLocalizedStringFromFormat(format: "%%d%@y", value: components.year!)
         }
@@ -176,11 +170,8 @@ public extension Date {
         else if (components.weekOfYear! >= 1) {
             return self.logicalLocalizedStringFromFormat(format: "%%d%@w", value: components.weekOfYear!)
         }
-        else if (components.day! >= 2) {
+        else if (components.day! >= 1) {
             return self.logicalLocalizedStringFromFormat(format: "%%d%@d", value: components.day!)
-        }
-        else if (isYesterday) {
-            return self.logicalLocalizedStringFromFormat(format: "%%d%@d", value: 1)
         }
         else if (components.hour! >= 1) {
             return self.logicalLocalizedStringFromFormat(format: "%%d%@h", value: components.hour!)
